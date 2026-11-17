@@ -1,6 +1,6 @@
 # Feature Specification: Location Weather Lookup
 
-**Feature Branch**: `new-feature`
+**Feature Branch**: `new-feature` (Spec Kit feature directory `specs/001-location-weather-lookup` is selected via `.specify/feature.json`, so scripts report `001-location-weather-lookup`)
 
 **Created**: 2026-11-17
 
@@ -22,6 +22,7 @@
 - Q: If the weather source returns some values but is missing others, what should the app show? → A: Show available values; show "—" (labeled "Not available") for missing ones
 - Q: If "Use my location" gets the user's position but no nearby place name can be found, what should the app show? → A: Show weather labeled with coordinates
 - Q: Should the app limit how many lookups a single visitor can make in a short time? → A: No per-visitor limit
+- Q: Pure alphabetical selection omits well-known places (e.g., "Los Angeles" returns 100 matches and California is not in the first 5). Should the selection rule change? → A: Keep the pure alphabetical rule; User Story 1 uses the region-qualified query "Los Angeles, California"
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -37,14 +38,15 @@ observation was recorded.
 **Why this priority**: This is the core value of the application. Without it, nothing else
 matters; with only this story, the product is a usable MVP.
 
-**Independent Test**: Open the app, enter "Los Angeles", submit, and confirm that a weather
-summary for Los Angeles appears showing every required fact.
+**Independent Test**: Open the app, enter "Los Angeles, California", submit, and confirm that
+a weather summary for Los Angeles appears showing every required fact. (An unqualified
+"Los Angeles" matches many places and goes through the choice list in User Story 2.)
 
 **Acceptance Scenarios**:
 
-1. **Given** the app is open with an empty search field, **When** the user enters "Los Angeles"
-   and submits, **Then** the app displays the resolved location name (e.g., "Los Angeles,
-   California, US") and all required current weather facts.
+1. **Given** the app is open with an empty search field, **When** the user enters "Los Angeles,
+   California" and submits, **Then** the app displays the resolved location name (e.g., "Los
+   Angeles, California, US") and all required current weather facts.
 2. **Given** a weather summary is displayed, **When** the user searches for a different
    location, **Then** the summary is replaced with the new location's current weather.
 3. **Given** the user submits a search, **When** results are still loading, **Then** the app
@@ -203,7 +205,7 @@ temperature and wind value changes unit; reload the page and confirm the chosen 
   changes only when the user performs a new search (by name or "Use my location"). The
   displayed observation time (FR-003) communicates the data's age.
 - **FR-015**: System MUST log each lookup request for troubleshooting, including timestamp,
-  request type (name search, ZIP, or current position), submitted location text or
+  request type (name search, ZIP, current position, or weather fetch), submitted location text or
   coordinates (current-position coordinates are logged exactly as received from the
   browser, without rounding), outcome (success or error type), upstream response status,
   and response time. Logs MUST NOT include user identity, and MUST be automatically deleted
@@ -233,7 +235,9 @@ temperature and wind value changes unit; reload the page and confirm the chosen 
 - **SC-003**: At least 90% of first-time test users complete a location lookup on their first
   attempt without assistance.
 - **SC-004**: Displayed temperature is within 2 °C (≈4 °F) of a reference weather source for
-  the same location and time in at least 95% of spot checks.
+  the same location and time in at least 95% of spot checks. Reference source: the nearest
+  US National Weather Service station observation (api.weather.gov) no older than 90 minutes,
+  sampled across at least 20 US cities.
 - **SC-005**: 100% of error conditions listed in FR-006 produce a human-readable message, and
   users can recover (search again) without reloading the page.
 - **SC-006**: The app passes an automated accessibility audit with no critical or serious
