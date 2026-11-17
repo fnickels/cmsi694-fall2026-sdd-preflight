@@ -1,0 +1,190 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "name": "Springfield",
+      "latitude": 37.215,
+      "longitude": -93.298,
+      "feature_code": "PPLA2",
+      "country_code": "US",
+      "timezone": "America/Chicago",
+      "country": "United States",
+      "admin1": "Missouri"
+    },
+    {
+      "id": 2,
+      "name": "Springfield",
+      "latitude": 39.802,
+      "longitude": -89.644,
+      "feature_code": "PPLA",
+      "country_code": "US",
+      "timezone": "America/Chicago",
+      "country": "United States",
+      "admin1": "Illinois"
+    },
+    {
+      "id": 3,
+      "name": "Springfield",
+      "latitude": 42.101,
+      "longitude": -72.59,
+      "feature_code": "PPL",
+      "country_code": "US",
+      "timezone": "America/New_York",
+      "country": "United States",
+      "admin1": "Massachusetts"
+    },
+    {
+      "id": 4,
+      "name": "Springfield",
+      "latitude": 39.924,
+      "longitude": -83.809,
+      "feature_code": "PPLA2",
+      "country_code": "US",
+      "timezone": "America/New_York",
+      "country": "United States",
+      "admin1": "Ohio"
+    },
+    {
+      "id": 5,
+      "name": "Springfield",
+      "latitude": 44.046,
+      "longitude": -123.022,
+      "feature_code": "PPL",
+      "country_code": "US",
+      "timezone": "America/Los_Angeles",
+      "country": "United States",
+      "admin1": "Oregon"
+    },
+    {
+      "id": 6,
+      "name": "Springfield",
+      "latitude": 38.789,
+      "longitude": -77.187,
+      "feature_code": "PPL",
+      "country_code": "US",
+      "timezone": "America/New_York",
+      "country": "United States",
+      "admin1": "Virginia"
+    },
+    {
+      "id": 7,
+      "name": "Springfield",
+      "latitude": 36.509,
+      "longitude": -86.885,
+      "feature_code": "PPL",
+      "country_code": "US",
+      "timezone": "America/Chicago",
+      "country": "United States",
+      "admin1": "Tennessee"
+    },
+    {
+      "id": 8,
+      "name": "Springfield",
+      "latitude": 43.298,
+      "longitude": -72.482,
+      "feature_code": "PPL",
+      "country_code": "US",
+      "timezone": "America/New_York",
+      "country": "United States",
+      "admin1": "Vermont"
+    },
+    {
+      "id": 9,
+      "name": "Springfield",
+      "latitude": 37.408,
+      "longitude": -102.614,
+      "feature_code": "PPL",
+      "country_code": "US",
+      "timezone": "America/Denver",
+      "country": "United States",
+      "admin1": "Colorado"
+    },
+    {
+      "id": 10,
+      "name": "Springfield",
+      "latitude": 32.369,
+      "longitude": -81.312,
+      "feature_code": "PPL",
+      "country_code": "US",
+      "timezone": "America/New_York",
+      "country": "United States",
+      "admin1": "Georgia"
+    },
+    {
+      "id": 11,
+      "name": "Springfield",
+      "latitude": -27.653,
+      "longitude": 152.917,
+      "feature_code": "PPL",
+      "country_code": "AU",
+      "timezone": "Australia/Brisbane",
+      "country": "Australia",
+      "admin1": "Queensland"
+    },
+    {
+      "id": 12,
+      "name": "Springfield",
+      "latitude": 46.333,
+      "longitude": -63.25,
+      "feature_code": "PPL",
+      "country_code": "CA",
+      "timezone": "America/Halifax",
+      "country": "Canada",
+      "admin1": "Prince Edward Island"
+    },
+    {
+      "id": 13,
+      "name": "Springfield",
+      "latitude": 18.05,
+      "longitude": -77.783,
+      "feature_code": "PPL",
+      "country_code": "JM",
+      "timezone": "America/Jamaica",
+      "country": "Jamaica",
+      "admin1": "Saint Elizabeth"
+    },
+    {
+      "id": 14,
+      "name": "Springfield",
+      "latitude": 39.9,
+      "longitude": -83.8,
+      "feature_code": "PPL",
+      "country_code": "US",
+      "timezone": "America/New_York",
+      "country": "United States",
+      "admin1": "Ohio"
+    },
+    {
+      "id": 15,
+      "name": "Springfield",
+      "latitude": 17.0,
+      "longitude": -88.5,
+      "feature_code": "PPL",
+      "country_code": "BZ",
+      "timezone": "America/Belize",
+      "country": "Belize"
+    },
+    {
+      "id": 16,
+      "name": "Springfield Park",
+      "latitude": 39.81,
+      "longitude": -89.65,
+      "feature_code": "PRK",
+      "country_code": "US",
+      "timezone": "America/Chicago",
+      "country": "United States",
+      "admin1": "Illinois"
+    },
+    {
+      "id": 17,
+      "name": "Springfield Airport",
+      "latitude": 39.84,
+      "longitude": -89.68,
+      "feature_code": "AIRP",
+      "country_code": "US",
+      "timezone": "America/Chicago",
+      "country": "United States",
+      "admin1": "Illinois"
+    }
+  ]
+}

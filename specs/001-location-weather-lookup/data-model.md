@@ -28,7 +28,8 @@ A place the user wants weather for (spec Key Entities).
 **Identity**: `(latitude rounded to 4 decimals, longitude rounded to 4 decimals)`. Used for
 deduping and React keys. Disambiguation dedupe uses `(name, region, countryCode)` (research R5).
 Only current populated places are kept: GeoNames `feature_code` starting with `PPL`,
-excluding `PPLX`, `PPLH`, `PPLQ`, and `PPLW` (research R2).
+excluding `PPLX`, `PPLH`, `PPLQ`, and `PPLW` (research R2). ZIP lookups keep every `PPL*`
+code, because the place owning a ZIP can be coded `PPLX` (e.g. 90210 → Beverly Hills).
 
 ---
 

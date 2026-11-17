@@ -1,0 +1,69 @@
+/*
+ * Condition themes (FR-010): a gradient band behind the card header keyed by
+ * data-condition × data-daynight. Text over the band uses --hero-text; every pair below
+ * keeps ≥ 4.5:1 contrast for normal text (WCAG 2.1 AA).
+ */
+.weather-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) 0;
+  padding: var(--space-5);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--hero-bg, #e7edf8);
+  color: var(--hero-text, #14181f);
+}
+
+.weather-place {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.weather-temp {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-hero);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.condition-icon {
+  flex: none;
+  width: 72px;
+  height: 72px;
+  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 0.15));
+}
+
+/* Day themes: light gradients with dark text (#14181f ≥ 12:1 on every stop). */
+[data-daynight='day'][data-condition='clear'] {
+  --hero-bg: linear-gradient(135deg, #fff1c7, #cfe6ff);
+}
+[data-daynight='day'][data-condition='partly-cloudy'] {
+  --hero-bg: linear-gradient(135deg, #e9f2ff, #dfe6f0);
+}
+[data-daynight='day'][data-condition='cloudy'],
+[data-daynight='day'][data-condition='fog'] {
+  --hero-bg: linear-gradient(135deg, #e6e9ef, #d3d9e3);
+}
+[data-daynight='day'][data-condition='drizzle'],
+[data-daynight='day'][data-condition='rain'] {
+  --hero-bg: linear-gradient(135deg, #dce9fb, #c9d6ea);
+}
+[data-daynight='day'][data-condition='snow'] {
+  --hero-bg: linear-gradient(135deg, #f4f8ff, #dde7f5);
+}
+[data-daynight='day'][data-condition='thunderstorm'] {
+  --hero-bg: linear-gradient(135deg, #d9d6ea, #c4c9db);
+}
+
+/* Night themes: deep gradients with light text (#f2f5fb ≥ 11:1 on every stop). */
+[data-daynight='night'] {
+  --hero-bg: linear-gradient(135deg, #1b2440, #2b3555);
+  --hero-text: #f2f5fb;
+}
+[data-daynight='night'][data-condition='thunderstorm'] {
+  --hero-bg: linear-gradient(135deg, #1c1830, #2d2846);
+}

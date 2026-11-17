@@ -51,6 +51,10 @@ constrains the design. API behaviors marked "verified" were exercised live on 20
     returns `MT` (mountain) entries; `Los Angeles, California` returns `PPLX` entries ("Los
     Angeles Downtown", "Los Angeles City Center"), and with them excluded resolves to exactly
     one match.
+  - **ZIP exception** (found in live validation): `90210` with `countryCode=US` returns
+    Beverly Hills coded `PPLX`, so ZIP lookups keep every `PPL*` code.
+  - **Prefix matching**: Open-Meteo matches name prefixes, so `Chicago, Illinois` also returns
+    Chicago Ridge and Chicago Heights and goes through the choice list (FR-004).
 - **Rationale**: Same provider as weather (one dependency, no key), returns `admin1`
   (region), `country`, `country_code`, coordinates, and `timezone`, which is everything the
   Location entity needs.
@@ -134,7 +138,7 @@ constrains the design. API behaviors marked "verified" were exercised live on 20
 
 Package versions verified on npm on 2026-11-17: typescript 6.0.3 (pinned; 7.0.2 is latest), fastify 5.12,
 @fastify/static 10.1, undici 8.12, react 19.3, vite 8.3, @vitejs/plugin-react 6.3, vitest 5.1,
-@playwright/test 1.65, @axe-core/playwright 4.14, pino 10.4, eslint 10.15, typescript-eslint 8.73,
+@playwright/test 1.65, @axe-core/playwright 4.14, pino 10.4, eslint 9.39 (10.15 is latest, but eslint-plugin-jsx-a11y 6.10 only supports ≤ 9), typescript-eslint 8.73,
 prettier 3.10.
 
 Providers call `fetch` imported from the `undici` package, not the global `fetch`. Node 24

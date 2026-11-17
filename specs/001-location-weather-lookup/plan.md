@@ -41,6 +41,7 @@ Technical approach (see [research.md](./research.md)):
 **Performance Goals**: p95 search-to-render ≤ 3 s on broadband (SC-002); first lookup completed in under 15 s (SC-001); client JS bundle ≤ 150 KB gzipped
 
 **Constraints**:
+
 - Hard 10 s client timeout; server timeouts are 4 s per upstream call and 8 s per request.
 - No auto-refresh (FR-014) and no per-visitor rate limit (clarification).
 - Nominatim calls go through a global ≤ 1 req/s queue.
@@ -63,7 +64,7 @@ Constitution v1.0.0 ([.specify/memory/constitution.md](../../.specify/memory/con
 | **III. Documentation as First-Class** | Contracts in `contracts/`; ADRs in `docs/adr/` seeded from research R1–R12; README covers setup and quickstart. markdownlint and OpenAPI lint (Redocly) run in CI. | ✅ | ✅ |
 | **IV. Incremental Delivery** | User stories are independently shippable in priority order: US1 (P1, MVP) → US2 (P2) → US3/US4 (P3). Each increment is a PR with passing gates. | ✅ | ✅ |
 | **V. Code Review** | Branch protection on `main`: at least 1 approving review and required CI checks. PR template includes a constitution checklist. | ✅ | ✅ |
-| **Quality: Static Analysis** | ESLint 10 (typescript-eslint, jsx-a11y, react-hooks) + Prettier 3 check in CI | ✅ | ✅ |
+| **Quality: Static Analysis** | ESLint 9 (typescript-eslint, jsx-a11y, react-hooks) + Prettier 3 check in CI | ✅ | ✅ |
 | **Quality: Automated Tests + coverage** | Vitest coverage (v8) with the first-merge baseline committed in `vitest.config.ts` thresholds; CI fails if coverage drops | ✅ | ✅ |
 | **Quality: Type Safety** | `tsc --noEmit` with `strict`, `noUncheckedIndexedAccess`; shared types between client and server | ✅ | ✅ |
 | **Quality: Documentation** | Public API (OpenAPI) + ADRs, linted in CI | ✅ | ✅ |

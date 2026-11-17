@@ -1,0 +1,16 @@
+{
+  "results": [
+    {
+      "id": 3448439,
+      "name": "São Paulo",
+      "latitude": -23.5475,
+      "longitude": -46.63611,
+      "feature_code": "PPLA",
+      "country_code": "BR",
+      "timezone": "America/Sao_Paulo",
+      "population": 10021295,
+      "country": "Brazil",
+      "admin1": "São Paulo"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "results": [
+    {
+      "id": 10,
+      "name": "Beverly Hills",
+      "latitude": 34.07362,
+      "longitude": -118.40036,
+      "feature_code": "PPLX",
+      "country_code": "US",
+      "timezone": "America/Los_Angeles",
+      "population": 34109,
+      "country": "United States",
+      "admin1": "California"
+    }
+  ]
+}

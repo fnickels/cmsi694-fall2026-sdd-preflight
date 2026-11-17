@@ -50,7 +50,7 @@ Run these against `npm run dev` with live upstreams. Each row maps to a spec acc
 | # | Action | Expected outcome | Spec |
 |---|---|---|---|
 | 1 | Enter `Los Angeles, California`, press Enter | Spinner, then a card titled "Los Angeles, California, US" with temperature, feels like, conditions + icon, humidity, wind (e.g., `8.1 mph WSW 250°`), and observed time in Pacific time | US1-1, FR-003 |
-| 2 | Search `Chicago, Illinois` while #1 is shown | Card replaced by Chicago | US1-2 |
+| 2 | Search `Springfield, Illinois` while #1 is shown | Card replaced by Springfield. (`Chicago, Illinois` instead lists Chicago, Chicago Ridge, Chicago Heights because Open-Meteo matches name prefixes.) | US1-2 |
 | 3 | Double-click Search quickly | Only one request (check the DevTools Network tab); button disabled while loading | US1-3, FR-005 |
 | 4 | Search `Xyzzyqwerty` | "We couldn't find that location…" alert; input still focused and editable | US1-4 |
 | 5 | Leave a card open for 15+ minutes | Nothing changes (no network requests) | US1-5, FR-014 |
@@ -59,7 +59,7 @@ Run these against `npm run dev` with live upstreams. Each row maps to a spec acc
 | 8 | Search `Springfield, Illinois` | Weather shown directly (single match) | US2-3 |
 | 9 | Search `90210` | "Beverly Hills, California, US" | FR-001 |
 | 10 | Search `SW1A 1AA` | Not-found alert suggesting a city name | Edge Cases |
-| 11 | Search `東京` and `São Paulo` | Tokyo, Japan and São Paulo, Brazil resolve | Edge Cases |
+| 11 | Search `東京` and `São Paulo` | `東京` shows "Tokyo, JP". `São Paulo` lists 5 Brazilian matches alphabetically by state (the city in São Paulo state is not among the first 5; see ADR 0005) | Edge Cases |
 | 12 | "Use my location", allow | Weather labeled with nearest place | US3-1 |
 | 13 | DevTools › Sensors › custom location `0, -140` (Pacific Ocean), "Use my location" | Weather labeled `0.00° N, 140.00° W` | US3-2 |
 | 14 | "Use my location", block | "Location access was denied…" alert; search still works | US3-3 |

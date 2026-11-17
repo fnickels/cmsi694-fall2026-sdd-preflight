@@ -1,0 +1,15 @@
+{
+  "results": [
+    {
+      "id": 5,
+      "name": "Prudhoe Bay",
+      "latitude": 20,
+      "longitude": 20,
+      "feature_code": "PPL",
+      "country_code": "US",
+      "country": "United States",
+      "admin1": "Alaska",
+      "timezone": "America/Anchorage"
+    }
+  ]
+}
