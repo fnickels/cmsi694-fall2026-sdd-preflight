@@ -107,6 +107,26 @@ describe('GET /api/search', () => {
     expect(res.json()).toEqual({ error: { code: 'INVALID_INPUT' } });
   });
 
+  it('recovers from a dropped connection and logs both attempts', async () => {
+    await setup();
+    agent
+      .get(GEO_ORIGIN)
+      .intercept({
+        path: (p) => new URL(p, GEO_ORIGIN).searchParams.get('name') === 'Los Angeles, California',
+      })
+      .replyWithError(new Error('ECONNRESET'));
+    geocodingReply('Los Angeles, California', 200, fixture('geocoding-la-ca.json'));
+    const res = await app.inject({ url: '/api/search?q=Los%20Angeles%2C%20California' });
+    expect(res.statusCode).toBe(200);
+    expect((await readLogLines(logDir))[0]).toMatchObject({
+      outcome: 'success',
+      upstream: [
+        { provider: 'open-meteo-geocoding', status: null },
+        { provider: 'open-meteo-geocoding', status: 200 },
+      ],
+    });
+  });
+
   it.each([503, 429])('maps upstream HTTP %i to 503 WEATHER_UNAVAILABLE', async (status) => {
     await setup();
     geocodingReply('Paris', status, { error: true });

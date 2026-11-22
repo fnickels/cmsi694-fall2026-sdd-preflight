@@ -42,32 +42,32 @@ docker run -p 3000:3000 -e NOMINATIM_USER_AGENT="weather-lookup (you@example.edu
 
 ## Tests and quality gates
 
-| Command | What it checks |
-|---|---|
-| `npm run lint` | ESLint + Prettier |
-| `npm run typecheck` | TypeScript (client, server, and tests configs) |
-| `npm test` | Unit, contract, and component tests with coverage thresholds |
-| `npm run test:e2e` | Playwright: user stories, accessibility (axe), keyboard, responsive, edge cases |
-| `PERF=1 npm run test:e2e -- performance` | SC-002: 95th-percentile lookup time ≤ 3 s |
-| `npm run lint:docs` / `npm run lint:api` | Markdown and OpenAPI contract lint |
-| `npm run build && npm run check:bundle` | Production build and 150 KB gzipped JS budget |
-| `LIVE=1 npm run test:live` | Optional SC-004 accuracy check against api.weather.gov (needs internet) |
+| Command                                      | What it checks                                                                  |
+| -------------------------------------------- | ------------------------------------------------------------------------------- |
+| `npm run lint`                             | ESLint + Prettier                                                               |
+| `npm run typecheck`                        | TypeScript (client, server, and tests configs)                                  |
+| `npm test`                                 | Unit, contract, and component tests with coverage thresholds                    |
+| `npm run test:e2e`                         | Playwright: user stories, accessibility (axe), keyboard, responsive, edge cases |
+| `PERF=1 npm run test:e2e -- performance`   | SC-002: 95th-percentile lookup time ≤ 3 s                                      |
+| `npm run lint:docs` / `npm run lint:api` | Markdown and OpenAPI contract lint                                              |
+| `npm run build && npm run check:bundle`    | Production build and 150 KB gzipped JS budget                                   |
+| `LIVE=1 npm run test:live`                 | Optional SC-004 accuracy check against api.weather.gov (needs internet)         |
 
 Manual validation scenarios are in
 [quickstart.md](specs/001-location-weather-lookup/quickstart.md).
 
 ## Configuration
 
-| Variable | Default | Purpose |
-|---|---|---|
-| `PORT` | `3000` | HTTP port |
-| `LOG_DIR` | `./logs` | Request log directory (see below) |
-| `NOMINATIM_USER_AGENT` | development placeholder | Identifying User-Agent for Nominatim; **required** when `NODE_ENV=production` |
-| `OPEN_METEO_GEOCODING_URL` | `https://geocoding-api.open-meteo.com/v1/search` | Forward geocoding |
-| `OPEN_METEO_FORECAST_URL` | `https://api.open-meteo.com/v1/forecast` | Current weather |
-| `NOMINATIM_URL` | `https://nominatim.openstreetmap.org` | Reverse geocoding and non-Latin search fallback |
-| `NOMINATIM_MIN_INTERVAL_MS` | `1000` | Minimum spacing between Nominatim calls (usage policy) |
-| `STATIC_DIR` | `dist/client` | Built client served by the server when present |
+| Variable                      | Default                                            | Purpose                                                                               |
+| ----------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `PORT`                      | `3000`                                           | HTTP port                                                                             |
+| `LOG_DIR`                   | `./logs`                                         | Request log directory (see below)                                                     |
+| `NOMINATIM_USER_AGENT`      | development placeholder                            | Identifying User-Agent for Nominatim; **required** when `NODE_ENV=production` |
+| `OPEN_METEO_GEOCODING_URL`  | `https://geocoding-api.open-meteo.com/v1/search` | Forward geocoding                                                                     |
+| `OPEN_METEO_FORECAST_URL`   | `https://api.open-meteo.com/v1/forecast`         | Current weather                                                                       |
+| `NOMINATIM_URL`             | `https://nominatim.openstreetmap.org`            | Reverse geocoding and non-Latin search fallback                                       |
+| `NOMINATIM_MIN_INTERVAL_MS` | `1000`                                           | Minimum spacing between Nominatim calls (usage policy)                                |
+| `STATIC_DIR`                | `dist/client`                                    | Built client served by the server when present                                        |
 
 ## Logs and privacy
 

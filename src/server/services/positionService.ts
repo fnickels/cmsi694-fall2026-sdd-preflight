@@ -1,6 +1,6 @@
 import { formatCoordLabel } from '../../shared/coordinates.js';
 import type { Location, UpstreamCall } from '../../shared/types.js';
-import { UpstreamError } from '../providers/http.js';
+import { attemptsOf, UpstreamError } from '../providers/http.js';
 import type { Nominatim } from '../providers/nominatim.js';
 import { buildDisplayName } from './searchService.js';
 
@@ -80,14 +80,15 @@ export function createPositionService({ nominatim }: { nominatim: Nominatim }) {
     { calls = [], signal }: { calls?: UpstreamCall[]; signal?: AbortSignal } = {},
   ) {
     try {
-      const { body, call } = await nominatim.reverse(latitude, longitude, signal);
-      calls.push(call);
+      const result = await nominatim.reverse(latitude, longitude, signal);
+      calls.push(...attemptsOf(result));
+      const body = result.body;
       const location =
         toLocation(body ?? {}, latitude, longitude) ?? coordinateLocation(latitude, longitude);
       return { location, calls };
     } catch (e) {
       if (!(e instanceof UpstreamError)) throw e;
-      calls.push(e.call);
+      calls.push(...e.calls);
       return { location: coordinateLocation(latitude, longitude), calls };
     }
   }

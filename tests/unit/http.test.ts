@@ -73,3 +73,47 @@ describe('fetchJson', () => {
     ).resolves.toBeDefined();
   });
 });
+
+describe('fetchJson retry on connection failure', () => {
+  it('retries once after a network error and reports both attempts', async () => {
+    agent.get(ORIGIN).intercept({ path: '/flaky' }).replyWithError(new Error('ECONNRESET'));
+    agent.get(ORIGIN).intercept({ path: '/flaky' }).reply(200, { ok: true });
+    const res = await fetchJson(`${ORIGIN}/flaky`, { provider: 'open-meteo-geocoding' });
+    expect(res.body).toEqual({ ok: true });
+    expect(res.calls?.map((c) => c.status)).toEqual([null, 200]);
+    expect(res.call).toBe(res.calls?.[1]);
+  });
+
+  it('gives up after the second network error', async () => {
+    agent
+      .get(ORIGIN)
+      .intercept({ path: '/down2' })
+      .replyWithError(new Error('ECONNREFUSED'))
+      .times(2);
+    const err = await catchErr(fetchJson(`${ORIGIN}/down2`, { provider: 'open-meteo-geocoding' }));
+    expect(err.kind).toBe('network');
+    expect(err.calls).toHaveLength(2);
+  });
+
+  it('does not retry timeouts or HTTP errors', async () => {
+    agent.get(ORIGIN).intercept({ path: '/slow2' }).reply(200, {}).delay(500);
+    const timeout = await catchErr(
+      fetchJson(`${ORIGIN}/slow2`, { provider: 'nominatim', timeoutMs: 50 }),
+    );
+    expect(timeout.calls).toHaveLength(1);
+
+    agent.get(ORIGIN).intercept({ path: '/503' }).reply(503, {});
+    const http = await catchErr(fetchJson(`${ORIGIN}/503`, { provider: 'nominatim' }));
+    expect(http.calls).toHaveLength(1);
+  });
+
+  it('does not retry once the caller has aborted', async () => {
+    const controller = new AbortController();
+    agent.get(ORIGIN).intercept({ path: '/abort' }).replyWithError(new Error('ECONNRESET'));
+    controller.abort();
+    const err = await catchErr(
+      fetchJson(`${ORIGIN}/abort`, { provider: 'nominatim', signal: controller.signal }),
+    );
+    expect(err.calls).toHaveLength(1);
+  });
+});

@@ -1,7 +1,7 @@
 import { isUsZip, validateQuery } from '../../shared/input.js';
 import type { Location, SearchResult, UpstreamCall } from '../../shared/types.js';
 import { AppError } from '../errors.js';
-import { UpstreamError } from '../providers/http.js';
+import { attemptsOf, UpstreamError } from '../providers/http.js';
 import type { Nominatim } from '../providers/nominatim.js';
 import type { Geocoding, GeocodingResult } from '../providers/openMeteoGeocoding.js';
 
@@ -129,14 +129,14 @@ export function createSearchService({
         ...(zip ? { countryCode: 'US' } : {}),
         ...(signal ? { signal } : {}),
       });
-      calls.push(geo.call);
+      calls.push(...attemptsOf(geo));
       let locations = geo.results
         .filter(zip ? isZipPlace : isCurrentPopulatedPlace)
         .map((r) => fromOpenMeteo(r, source));
 
       if (locations.length === 0 && !zip) {
         const nom = await nominatim.search(query, signal);
-        calls.push(nom.call);
+        calls.push(...attemptsOf(nom));
         const places = Array.isArray(nom.body) ? (nom.body as NominatimPlace[]) : [];
         locations = places.map(fromNominatim).filter((l): l is Location => l !== null);
       }
@@ -154,7 +154,7 @@ export function createSearchService({
       return { result, calls };
     } catch (e) {
       if (e instanceof UpstreamError) {
-        calls.push(e.call);
+        calls.push(...e.calls);
         throw new AppError('WEATHER_UNAVAILABLE', { cause: e });
       }
       throw e;

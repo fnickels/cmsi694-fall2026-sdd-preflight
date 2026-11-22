@@ -11,6 +11,8 @@ export default defineConfig({
           name: 'node',
           include: ['tests/unit/**/*.test.ts', 'tests/contract/**/*.test.ts'],
           environment: 'node',
+          // Building the app and compiling the OpenAPI schema can exceed 5 s under full-suite load.
+          testTimeout: 20_000,
         },
       },
       {

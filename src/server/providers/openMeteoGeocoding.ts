@@ -19,7 +19,7 @@ export interface Geocoding {
   search(
     name: string,
     opts?: { countryCode?: string; signal?: AbortSignal },
-  ): Promise<{ results: GeocodingResult[]; call: UpstreamCall }>;
+  ): Promise<{ results: GeocodingResult[]; call: UpstreamCall; calls?: UpstreamCall[] }>;
 }
 
 export function createGeocoding({ baseUrl }: { baseUrl: string }): Geocoding {
@@ -31,11 +31,18 @@ export function createGeocoding({ baseUrl }: { baseUrl: string }): Geocoding {
       url.searchParams.set('language', 'en');
       url.searchParams.set('format', 'json');
       if (countryCode) url.searchParams.set('countryCode', countryCode);
-      const { body, call } = await fetchJson<{ results?: GeocodingResult[] }>(url.toString(), {
-        provider: 'open-meteo-geocoding',
-        ...(signal ? { signal } : {}),
-      });
-      return { results: Array.isArray(body.results) ? body.results : [], call };
+      const { body, call, calls } = await fetchJson<{ results?: GeocodingResult[] }>(
+        url.toString(),
+        {
+          provider: 'open-meteo-geocoding',
+          ...(signal ? { signal } : {}),
+        },
+      );
+      return {
+        results: Array.isArray(body.results) ? body.results : [],
+        call,
+        ...(calls ? { calls } : {}),
+      };
     },
   };
 }

@@ -1,7 +1,7 @@
 import { conditionFor } from '../../shared/conditions.js';
 import type { CurrentWeatherObservation, UpstreamCall } from '../../shared/types.js';
 import { AppError } from '../errors.js';
-import { UpstreamError } from '../providers/http.js';
+import { attemptsOf, UpstreamError } from '../providers/http.js';
 import type { Forecast } from '../providers/openMeteoForecast.js';
 
 interface ForecastBody {
@@ -58,12 +58,12 @@ export function createWeatherService({ forecast }: { forecast: Forecast }) {
     { calls = [], signal }: { calls?: UpstreamCall[]; signal?: AbortSignal } = {},
   ) {
     try {
-      const { body, call } = await forecast.current(lat, lon, signal);
-      calls.push(call);
-      return { observation: normalizeForecast(body), calls };
+      const result = await forecast.current(lat, lon, signal);
+      calls.push(...attemptsOf(result));
+      return { observation: normalizeForecast(result.body), calls };
     } catch (e) {
       if (e instanceof UpstreamError) {
-        calls.push(e.call);
+        calls.push(...e.calls);
         throw new AppError('WEATHER_UNAVAILABLE', { cause: e });
       }
       throw e;

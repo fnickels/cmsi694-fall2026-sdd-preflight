@@ -198,6 +198,10 @@ global `fetch`.
 - **Decision**:
   - Server: per-upstream timeout of 4 s (`AbortSignal.timeout`), with a total budget per
     API request of 8 s.
+  - Server: a connection failure (refused, reset, DNS) is retried once, because it fails fast
+    and is often transient. Timeouts and HTTP errors are not retried. Both attempts appear in
+    the request log, and the 8 s budget still bounds them. Added after a live dropped
+    connection to Open-Meteo surfaced as "weather unavailable" (2026-11-17).
   - Client: hard abort at 10 s (spec maximum). The submit control is disabled while a
     request is in flight.
   - Error codes: `INVALID_INPUT`, `LOCATION_NOT_FOUND`, `WEATHER_UNAVAILABLE`, mapped from
