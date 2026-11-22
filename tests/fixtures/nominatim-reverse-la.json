@@ -1,0 +1,18 @@
+{
+  "place_id": 314414187,
+  "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+  "lat": "34.0536923",
+  "lon": "-118.2427676",
+  "category": "boundary",
+  "type": "administrative",
+  "addresstype": "city",
+  "name": "Los Angeles",
+  "display_name": "Los Angeles, Los Angeles County, California, United States",
+  "address": {
+    "city": "Los Angeles",
+    "county": "Los Angeles County",
+    "state": "California",
+    "country": "United States",
+    "country_code": "us"
+  }
+}

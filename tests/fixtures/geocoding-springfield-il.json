@@ -1,0 +1,15 @@
+{
+  "results": [
+    {
+      "id": 2,
+      "name": "Springfield",
+      "latitude": 39.802,
+      "longitude": -89.644,
+      "feature_code": "PPLA",
+      "country_code": "US",
+      "timezone": "America/Chicago",
+      "country": "United States",
+      "admin1": "Illinois"
+    }
+  ]
+}

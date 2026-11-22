@@ -1,0 +1,157 @@
+openapi: 3.1.0
+info:
+  title: Location Weather Lookup – Backend-for-Frontend API
+  version: 1.0.0
+  description: |
+    Internal API consumed only by the Location Weather Lookup web client.
+    All measurements are metric and unrounded; the client converts and rounds (FR-003, FR-008).
+    Every request is logged per FR-015 (see data-model.md › RequestLogEntry).
+    Error bodies never contain upstream or technical details (FR-006).
+servers:
+  - url: /api
+security: []  # Intentionally unauthenticated: no accounts or sign-in (FR-013)
+paths:
+  /search:
+    get:
+      operationId: searchLocations
+      summary: Resolve a place name or 5-digit US ZIP code to up to 5 locations (FR-001, FR-002, FR-004)
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema: { type: string, minLength: 1, maxLength: 100 }
+          description: Trimmed by server. `^\d{5}$` is treated as a US ZIP code.
+      responses:
+        '200':
+          description: One or more matches.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SearchResult' }
+        '400': { $ref: '#/components/responses/InvalidInput' }
+        '404': { $ref: '#/components/responses/LocationNotFound' }
+        '503': { $ref: '#/components/responses/WeatherUnavailable' }
+  /weather:
+    get:
+      operationId: getCurrentWeather
+      summary: Current conditions at coordinates (FR-003)
+      parameters:
+        - { name: lat, in: query, required: true, schema: { type: number, minimum: -90, maximum: 90 } }
+        - { name: lon, in: query, required: true, schema: { type: number, minimum: -180, maximum: 180 } }
+      responses:
+        '200':
+          description: Current observation. Individual measurements may be null (shown as "—").
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CurrentWeatherObservation' }
+        '400': { $ref: '#/components/responses/InvalidInput' }
+        '503': { $ref: '#/components/responses/WeatherUnavailable' }
+  /position:
+    get:
+      operationId: describePosition
+      summary: Reverse-geocode the browser position to a Location (FR-007)
+      description: |
+        Always 200 for valid coordinates. If no place name is found, returns a Location with
+        `isCoordinateLabel: true` and a coordinate `displayName` (e.g. "36.58° N, 118.29° W").
+        Reverse-geocoder failure or timeout also falls back to the coordinate label, because
+        weather can still be shown.
+      parameters:
+        - { name: lat, in: query, required: true, schema: { type: number, minimum: -90, maximum: 90 } }
+        - { name: lon, in: query, required: true, schema: { type: number, minimum: -180, maximum: 180 } }
+      responses:
+        '200':
+          description: Location for the position.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Location' }
+        '400': { $ref: '#/components/responses/InvalidInput' }
+components:
+  responses:
+    InvalidInput:
+      description: Empty, too long, or malformed input.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { error: { code: INVALID_INPUT } }
+    LocationNotFound:
+      description: No populated place matched the query.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { error: { code: LOCATION_NOT_FOUND } }
+    WeatherUnavailable:
+      description: Upstream unavailable, rate-limited (HTTP 429), timed out, or returned unusable data.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { error: { code: WEATHER_UNAVAILABLE } }
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required: [code]
+          properties:
+            code:
+              type: string
+              enum: [INVALID_INPUT, LOCATION_NOT_FOUND, WEATHER_UNAVAILABLE]
+    Location:
+      type: object
+      additionalProperties: false
+      required: [name, region, country, countryCode, latitude, longitude, timeZone, displayName, source, isCoordinateLabel]
+      properties:
+        name: { type: string }
+        region: { type: [string, 'null'] }
+        country: { type: [string, 'null'] }
+        countryCode: { type: [string, 'null'], pattern: '^[A-Z]{2}$' }
+        latitude: { type: number, minimum: -90, maximum: 90 }
+        longitude: { type: number, minimum: -180, maximum: 180 }
+        timeZone: { type: [string, 'null'] }
+        displayName: { type: string }
+        source: { type: string, enum: [search, zip, position] }
+        isCoordinateLabel: { type: boolean }
+    SearchResult:
+      type: object
+      additionalProperties: false
+      required: [query, queryType, matches, totalMatches, refineSuggested]
+      properties:
+        query: { type: string }
+        queryType: { type: string, enum: [search, zip] }
+        matches:
+          type: array
+          minItems: 1
+          maxItems: 5
+          description: Sorted alphabetically by region, then country (FR-004).
+          items: { $ref: '#/components/schemas/Location' }
+        totalMatches: { type: integer, minimum: 1 }
+        refineSuggested: { type: boolean, description: 'true when totalMatches > 5' }
+    Condition:
+      type: object
+      additionalProperties: false
+      required: [category, description]
+      properties:
+        category:
+          type: string
+          enum: [clear, partly-cloudy, cloudy, fog, drizzle, rain, snow, thunderstorm]
+        description: { type: string }
+    CurrentWeatherObservation:
+      type: object
+      additionalProperties: false
+      required: [temperatureC, feelsLikeC, humidityPct, windSpeedKmh, windDirectionDeg, weatherCode, isDay, condition, observedAt, timeZone]
+      properties:
+        temperatureC: { type: [number, 'null'] }
+        feelsLikeC: { type: [number, 'null'] }
+        humidityPct: { type: [number, 'null'], minimum: 0, maximum: 100 }
+        windSpeedKmh: { type: [number, 'null'], minimum: 0 }
+        windDirectionDeg: { type: [number, 'null'], minimum: 0, maximum: 360 }
+        weatherCode: { type: [integer, 'null'] }
+        isDay: { type: [boolean, 'null'] }
+        condition:
+          oneOf:
+            - { $ref: '#/components/schemas/Condition' }
+            - { type: 'null' }
+        observedAt: { type: string, format: date-time, description: ISO 8601 with the location's UTC offset }
+        timeZone: { type: string, description: IANA time zone of the location }

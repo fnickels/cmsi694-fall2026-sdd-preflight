@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+logs/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.specify/
+.github/skills/
+.github/agents/
+.github/prompts/
+specs/
+*.md

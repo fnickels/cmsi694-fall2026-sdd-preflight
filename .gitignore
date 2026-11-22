@@ -1,0 +1,25 @@
+# Dependencies and build output
+node_modules/
+dist/
+build/
+coverage/
+
+# Logs (may contain exact coordinates; never commit)
+logs/
+*.log
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Test artifacts
+test-results/
+playwright-report/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.idea/

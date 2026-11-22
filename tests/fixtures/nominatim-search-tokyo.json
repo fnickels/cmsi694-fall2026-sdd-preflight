@@ -1,0 +1,17 @@
+[
+  {
+    "place_id": 1,
+    "lat": "35.6812",
+    "lon": "139.7671",
+    "category": "boundary",
+    "type": "administrative",
+    "addresstype": "province",
+    "name": "Tokyo",
+    "display_name": "Tokyo, Japan",
+    "address": {
+      "province": "Tokyo",
+      "country": "Japan",
+      "country_code": "jp"
+    }
+  }
+]
